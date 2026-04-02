@@ -370,18 +370,31 @@ function spinWheel() {
     // Reproducir sonido de casino (tics que desaceleran)
     playSound('spin');
 
-    // Calcular rotaciÃ³n aleatoria
+    // Calcular rotaciÃ³n aleatoria y exacta
     const prizes = CONFIG.prizes;
     const randomPrize = Math.floor(Math.random() * prizes.length);
     const arc = 360 / prizes.length;
 
-    // RotaciÃ³n: mÃºltiples vueltas + posiciÃ³n del premio
-    // El puntero estÃ¡ arriba (-90Â° relativo al inicio del canvas), asÃ que calcular la posiciÃ³n correcta
+    // PosiciÃ³n del centro del premio
     const prizeAngle = randomPrize * arc + arc / 2;
+    // Para que el centro del premio termine arriba (270 grados en un canvas estÃ¡ndar)
+    const targetAngle = (270 - prizeAngle + 360) % 360;
+    
+    // Calcular cuÃ¡nto falta desde la rotaciÃ³n actual para llegar al Ã¡ngulo exacto
+    const currentMod = currentRotation % 360;
+    let diff = targetAngle - currentMod;
+    if (diff < 0) diff += 360;
+
     const extraSpins = 5 + Math.floor(Math.random() * 3); // 5-7 vueltas completas
-    const totalRotation = extraSpins * 360 + (360 - prizeAngle) - 90; // -90 para ajustar al puntero superior
+    const totalRotation = (extraSpins * 360) + diff;
 
     currentRotation += totalRotation;
+
+    // AÃ±adir efecto visual de tensiÃ³n (zoom mientras gira)
+    const ruletaWrapper = document.querySelector('.ruleta-wrapper');
+    const ruletaRight = document.querySelector('.ruleta-right');
+    if(ruletaWrapper) ruletaWrapper.classList.add('is-spinning');
+    if(ruletaRight) ruletaRight.classList.add('focus-mode-fade');
 
     // Aplicar rotaciÃ³n
     wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
@@ -389,6 +402,13 @@ function spinWheel() {
 
     // Mostrar resultado despuÃ©s de la animaciÃ³n
     setTimeout(() => {
+        if(ruletaWrapper) {
+            ruletaWrapper.classList.remove('is-spinning');
+            ruletaWrapper.classList.add('winner-flash');
+            setTimeout(() => ruletaWrapper.classList.remove('winner-flash'), 2000);
+        }
+        if(ruletaRight) ruletaRight.classList.remove('focus-mode-fade');
+        
         showResult(prizes[randomPrize]);
         isSpinning = false;
     }, 4000);

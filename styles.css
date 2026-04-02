@@ -856,6 +856,35 @@ section {
     transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
 }
 
+/* Efectos visuales durante y después de girar */
+.ruleta-wrapper.is-spinning {
+    animation: ruletaZoomShake 0.4s infinite alternate;
+}
+
+@keyframes ruletaZoomShake {
+    0% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(201,169,110,0.3)); }
+    100% { transform: scale(1.02); filter: drop-shadow(0 0 30px rgba(201,169,110,0.6)); }
+}
+
+.ruleta-wrapper.winner-flash {
+    animation: goldImplosion 1.5s ease-out;
+}
+
+@keyframes goldImplosion {
+    0% { transform: scale(1.1); filter: drop-shadow(0 0 80px rgba(201,169,110,1)); box-shadow: 0 0 0 20px var(--color-gold); }
+    100% { transform: scale(1); filter: drop-shadow(0 0 0 transparent); box-shadow: none; }
+}
+
+.ruleta-right {
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.ruleta-right.focus-mode-fade {
+    opacity: 0.3;
+    pointer-events: none;
+    transform: scale(0.95);
+}
+
 #wheelCanvas {
     width: 100%;
     height: 100%;
