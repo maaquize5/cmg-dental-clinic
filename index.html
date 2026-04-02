@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Inauguración de CMG Dental Clinic - Dra. Carla Estrella Mendieta Gutierrez. Únete a nosotros y participa en nuestra ruleta de premios.">
+    <meta name="theme-color" content="#C9A96E">
+
+    <title>CMG Dental Clinic | Gran Inauguración</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦷</text></svg>">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+
+    <link rel="stylesheet" href="styles.css?v=11">
+</head>
+<body>
+    <!-- Loader -->
+    <div id="loader" class="loader">
+        <div class="loader-content">
+            <div class="loader-tooth">🦷</div>
+            <div class="loader-text">Cargando experiencia...</div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo">
+                <img src="assets/images/logoCMclinicp.png" alt="CMG Dental Clinic" style="height: 40px; margin-right: 10px;">
+                <span class="logo-text">CMG Dental Clinic</span>
+            </a>
+            <button class="nav-toggle" aria-label="Menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="#hero" class="nav-link">Inicio</a></li>
+                <li><a href="#evento" class="nav-link">Evento</a></li>
+                <li><a href="#ruleta" class="nav-link">Premios</a></li>
+                <li><a href="#doctora" class="nav-link">La Doctora</a></li>
+                <li><a href="#ubicacion" class="nav-link">Ubicación</a></li>
+                <li><a href="#contacto" class="nav-link nav-cta">Confirmar Asistencia</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="hero-background">
+            <div class="marble-texture"></div>
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-badge animate-fade-in">
+                <span class="badge-line"></span>
+                <span class="badge-text">Te invitamos a nuestra</span>
+                <span class="badge-line"></span>
+            </div>
+            <h1 class="hero-title animate-fade-in-up">
+                <span class="title-accent">Gran</span>
+                <span class="title-main">Inauguración</span>
+            </h1>
+            <div class="hero-clinic animate-fade-in-up"" style="margin-bottom: var(--spacing-sm);">
+                <img src="assets/images/logoletraCMG.png" alt="CMG Dental Clinic" style="max-width: 250px; margin: 0 auto; display: block;" class="clinic-icon">
+                <h2 class="clinic-name">CMG Dental Clinic</h2>
+                <p class="clinic-tagline">Odontología Premium & Estética Dental</p>
+                <p class="clinic-tagline" style="font-weight: 500; font-size: 1.1rem; margin-top: 5px; color: var(--color-gold);">Dra. Carla Estrella Mendieta Gutierrez</p>
+            </div>
+            <div class="hero-date animate-fade-in-up">
+                <div class="date-item">
+                    <span class="date-icon">📅</span>
+                    <span class="date-text">3 de Abril, 2026</span>
+                </div>
+                <div class="date-divider"></div>
+                <div class="date-item">
+                    <span class="date-icon">🕐</span>
+                    <span class="date-text">10:00 AM</span>
+                </div>
+            </div>
+            <a href="#ruleta" class="hero-cta animate-fade-in-up">
+                <span class="cta-text">Gira la Ruleta y Gana Premios</span>
+                <span class="cta-icon">🎁</span>
+            </a>
+            <div class="scroll-indicator animate-bounce">
+                <span class="scroll-text">Desliza</span>
+                <span class="scroll-arrow">↓</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section id="evento" class="countdown-section">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="section-subtitle">El momento se acerca</span>
+                <h2 class="section-title">Cuenta Regresiva</h2>
+                <div class="title-decoration">
+                    <span class="decoration-line"></span>
+                    <span class="decoration-diamond">◆</span>
+                    <span class="decoration-line"></span>
+                </div>
+            </div>
+
+            <div class="countdown-timer animate-on-scroll">
+                <div class="countdown-item">
+                    <div class="countdown-number" id="days">00</div>
+                    <div class="countdown-label">Días</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="hours">00</div>
+                    <div class="countdown-label">Horas</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="minutes">00</div>
+                    <div class="countdown-label">Minutos</div>
+                </div>
+                <div class="countdown-separator">:</div>
+                <div class="countdown-item">
+                    <div class="countdown-number" id="seconds">00</div>
+                    <div class="countdown-label">Segundos</div>
+                </div>
+            </div>
+
+            <div class="event-highlights animate-on-scroll">
+                <div class="highlight-card">
+                    <div class="highlight-icon">🥂</div>
+                    <h3 class="highlight-title">Coctel de Bienvenida</h3>
+                    <p class="highlight-text">Disfruta de un exclusivo coctel mientras conoces nuestras instalaciones</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">🎁</div>
+                    <h3 class="highlight-title">Premios Exclusivos</h3>
+                    <p class="highlight-text">Gira nuestra ruleta y gana tratamientos dentales gratuitos</p>
+                </div>
+                <div class="highlight-card">
+                    <div class="highlight-icon">✨</div>
+                    <h3 class="highlight-title">Tecnología de Vanguardia</h3>
+                    <p class="highlight-text">Conoce nuestro equipamiento de última generación</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Doctor Section -->
+    <section id="doctora" class="location-section" style="background: var(--color-marble-dark);">
+        <div class="container">
+            <div class="location-content animate-on-scroll" style="align-items: center;">
+                <div class="location-info" style="flex: 1; padding-right: 2rem;">
+                    <span class="section-subtitle">Conoce a la Especialista</span>
+                    <h2 class="section-title">Dra. Carla Estrella Mendieta Gutierrez</h2>
+                    <div class="title-decoration" style="justify-content: flex-start; transform: none; margin: 15px 0;">
+                        <span class="decoration-line" style="width: 50px;"></span>
+                        <span class="decoration-diamond">◆</span>
+                        <span class="decoration-line" style="width: 50px;"></span>
+                    </div>
+                    <p style="color: var(--color-gray); margin-bottom: 20px;">
+                        Bienvenido a <strong>CMG Dental Clinic</strong>, tu nueva clínica odontológica elegida para brindarte un servicio de alta gama. Dirigida por la Dra. Carla Estrella Mendieta Gutierrez, nos comprometemos a cuidar de tu salud bucal con el máximo profesionalismo y la mejor calidad posible.
+                    </p>
+                </div>
+                <div class="map-container" style="flex: 1; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg);">
+                    <img src="assets/images/CMGperfil.png" alt="Dra. Carla Estrella Mendieta Gutierrez" style="width: 100%; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ruleta Section -->
+    <section id="ruleta" class="ruleta-section" style="position: relative; overflow: hidden;">
+        <!-- Elemento Decorativo -->
+        <img src="assets/images/flor_del_logo.png" alt="CMG Decor" style="position: absolute; bottom: -80px; left: -80px; width: 350px; opacity: 0.05; transform: rotate(-25deg); pointer-events: none;">
+
+        <div class="container" style="position: relative; z-index: 1;">
+            <div class="section-header animate-on-scroll">
+                <span class="section-subtitle">Tu momento de la suerte</span>
+                <h2 class="section-title">Ruleta de Premios</h2>
+                <div class="title-decoration">
+                    <span class="decoration-line"></span>
+                    <span class="decoration-diamond">◆</span>
+                    <span class="decoration-line"></span>
+                </div>
+                <p class="section-description">Gira la ruleta y descubre tu premio exclusivo para el día de la inauguración</p>
+            </div>
+
+            <div class="ruleta-container animate-on-scroll" style="position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px;">
+                <div id="ruletaOverlay" class="ruleta-lock-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: var(--radius-lg);">
+                    <div id="secretUnlock" style="font-size: 3rem; margin-bottom: 20px; color: var(--color-gold); cursor: pointer;" title="Acceso reservado">🔒</div>
+                    <h3 style="font-family: var(--font-display); font-size: 1.5rem; color: var(--color-dark); text-align: center; margin: 0 15px;">La ruleta estará disponible únicamente el día del evento</h3>
+                </div>
+
+                <div class="ruleta-left" style="width: 100%; display: flex; justify-content: center;">
+                    <div class="ruleta-wrapper" style="width: 100%; max-width: 480px; aspect-ratio: 1/1;">
+                        <!-- Indicador superior -->
+                        <div class="ruleta-pointer" style="font-size: 2rem; top: -25px;">▼</div>
+
+                        <!-- Ruleta -->
+                        <div class="ruleta-wheel" id="wheel" style="width: 100%; height: 100%;">
+                            <canvas id="wheelCanvas" width="600" height="600"></canvas>
+                        </div>
+
+                        <!-- Centro de la ruleta -->
+                        <div class="ruleta-center" style="width: 80px; height: 80px;">
+                            <span class="center-text" style="font-size: 2rem;">🦷</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ruleta-right" style="width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 20px; align-items: center; background: var(--color-white); padding: 30px; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+                    
+                    <div id="pacienteForm" style="width: 100%; text-align: center; margin-bottom: 10px;">
+                        <h3 style="font-family: var(--font-display); color: var(--color-gold); margin-bottom: 15px; font-size: 1.5rem;">Datos del Paciente</h3>
+                        <input type="text" id="nombrePaciente" placeholder="Nombre completo..." style="width: 100%; padding: 12px 15px; border: 1px solid var(--color-gold-light); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 1rem; margin-bottom: 10px;">
+                        <input type="tel" id="telefonoPaciente" placeholder="Celular (Ej: 71234567)" style="width: 100%; padding: 12px 15px; border: 1px solid var(--color-gold-light); border-radius: var(--radius-sm); font-family: var(--font-body); font-size: 1rem; margin-bottom: 15px;">
+                        
+                        <!-- Botón girar -->
+                        <button class="spin-button disabled" id="spinBtn" disabled style="opacity: 0.5; cursor: not-allowed; width: 100%;">
+                            <span class="spin-text">¡Girar Ruleta!</span>
+                            <span class="spin-icon">🎰</span>
+                        </button>
+                    </div>
+
+                    <!-- Resultado Actual -->
+                    <div class="result-container" id="resultContainer" style="position: static; transform: none; display: none; width: 100%; animation: fade-in 0.5s;">
+                        <div class="result-content" style="padding: 20px 10px; width: 100%; position: relative;">
+                            <div class="result-confetti"></div>
+                            
+                            <div id="premioTicket" style="background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 50%, var(--color-gold-dark) 100%); padding: 30px; border-radius: var(--radius-md); margin-bottom: 20px; box-shadow: 0 10px 30px rgba(201, 169, 110, 0.4); text-align: center; border: 2px solid var(--color-gold-light); position: relative; overflow: hidden;">
+                                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.05) 10px, rgba(255,255,255,0.05) 20px); z-index: 1;"></div>
+                                <div style="position: relative; z-index: 2;">
+                                    <img src="assets/images/logoletraCMG.png" alt="CMG Dental Clinic" style="height: 40px; margin: 0 auto 15px; filter: brightness(0) invert(1);">
+                                    <h3 style="font-size: 1.5rem; margin-bottom: 5px; color: var(--color-white); font-family: var(--font-display); letter-spacing: 1px;">VALE DE PREMIO 🎉</h3>
+                                    <div style="background: rgba(255,255,255,0.95); padding: 15px; border-radius: 8px; margin-top: 15px; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05);">
+                                        <h4 id="resultName" style="color: var(--color-gray-dark); font-size: 1.3rem; margin-bottom: 5px; font-weight: 700; text-transform: uppercase;">---</h4>
+                                        <div class="result-prize" id="resultPrize" style="font-size: 1.3rem; color: var(--color-rose-dark); font-weight: 800; margin-top: 5px;"></div>
+                                    </div>
+                                    <p style="color: var(--color-white); font-size: 0.8rem; margin-top: 15px; font-weight: 500;">Dra. Carla Estrella Mendieta G.</p>
+                                </div>
+                            </div>
+                            
+                            <button id="siguienteBtn" style="width: 100%; background: var(--color-dark); color: white; padding: 12px; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; transition: 0.3s; margin-bottom: 15px;">
+                                Girar para el siguiente paciente 🔄
+                            </button>
+                            
+                            <button class="result-btn" id="shareBtn" style="width: 100%;">
+                                <span>1. Generar Imagen y Enviar a WhatsApp</span>
+                                <span>📱</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Historial de Ganadores -->
+                    <div id="historialGanadores" style="width: 100%; max-height: 250px; overflow-y: auto; background: var(--color-marble); border-radius: var(--radius-sm); padding: 15px; margin-top: 10px; border: 1px solid var(--color-marble-dark);">
+                        <h3 style="font-family: var(--font-display); color: var(--color-gray); margin-bottom: 15px; font-size: 1.1rem; text-align: center; border-bottom: 1px solid var(--color-gray-light); padding-bottom: 8px;">Ganadores del día</h3>
+                        <ul id="winnersList" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; text-align: left; font-size: 0.9rem;">
+                            <!-- Ganadores se apilarán aquí -->
+                            <li id="noWinnersMsg" style="color: var(--color-gray-light); text-align: center; padding: 10px;">Aún no hay ganadores</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conoce a la Doctora Section -->
+    <section id="doctora" class="doctor-section" style="padding: 100px 0; background: var(--color-marble-light); position: relative; overflow: hidden;">
+        <img src="assets/images/flor_del_logo.png" alt="Decoración" style="position: absolute; top: -50px; right: -50px; width: 300px; opacity: 0.1; transform: rotate(15deg); pointer-events: none;">
+        
+        <div class="container animate-on-scroll">
+            <div style="display: flex; flex-wrap: wrap; gap: 50px; align-items: center; justify-content: center;">
+                <div style="flex: 1 1 350px; max-width: 450px; position: relative;">
+                    <div style="position: absolute; top: 15px; left: -15px; width: 100%; height: 100%; border: 3px solid var(--color-gold); border-radius: var(--radius-md); z-index: 0;"></div>
+                    <div style="background: var(--color-white); border-radius: var(--radius-md); position: relative; z-index: 1; padding: 15px; box-shadow: var(--shadow-lg);">
+                        <img src="assets/images/CMGperfil.png" alt="Dra. Carla Estrella Mendieta Gutierrez" style="width: 100%; border-radius: var(--radius-sm); display: block;" onerror="this.src='assets/images/CMGperfiles.jpg'">
+                    </div>
+                </div>
+                <div style="flex: 1 1 450px; text-align: left;">
+                    <div class="section-header" style="text-align: left; margin-bottom: 30px;">
+                        <span class="section-subtitle">Atención de Excelencia</span>
+                        <h2 class="section-title">Dra. Carla Estrella</h2>
+                    </div>
+                    <p style="font-family: var(--font-body); font-size: 1.15rem; color: var(--color-gray); margin-bottom: 20px; line-height: 1.8;">
+                        "Una sonrisa élite requiere de manos de élite".<br><br>Soy una profesional apasionada por transformar sonrisas combinando la más <strong>alta precisión odontológica y estética moderna</strong>.
+                    </p>
+                    <p style="font-family: var(--font-body); font-size: 1.15rem; color: var(--color-gray); margin-bottom: 25px; line-height: 1.8;">
+                        Te garantizo una experiencia premium y cómoda desde el primer momento en tu silla hasta celebrar tu sonrisa soñada en el corazón de nuestra clínica.
+                    </p>
+                    <div style="display: inline-block; padding: 20px 30px; border-left: 4px solid var(--color-gold); background: var(--color-white); box-shadow: var(--shadow-sm); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;">
+                        <img src="assets/images/logoletraCMG.png" alt="CMG Firma" style="height: 35px; filter: brightness(0); opacity: 0.85; max-width: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ubicación Section -->
+    <section id="ubicacion" class="location-section">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <span class="section-subtitle">Encuéntranos</span>
+                <h2 class="section-title">Nuestra Ubicación</h2>
+                <div class="title-decoration">
+                    <span class="decoration-line"></span>
+                    <span class="decoration-diamond">◆</span>
+                    <span class="decoration-line"></span>
+                </div>
+            </div>
+
+            <div class="location-content animate-on-scroll">
+                <div class="location-info">
+                    <div class="info-card">
+                        <div class="info-icon">📍</div>
+                        <div class="info-details">
+                            <h3>Dirección</h3>
+                            <p>Edificio Alianza</p>
+                            <p>Oficina 109</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon">📞</div>
+                        <div class="info-details">
+                            <h3>WhatsApp</h3>
+                            <p>+591 73223075</p>
+                        </div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-icon"></div>
+                        <div class="info-details">
+                            <h3>Horario del Evento</h3>
+                            <p>3 de Abril, 2026</p>
+                            <p>10:00 AM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30601.75933383971!2d-68.1376763916658!3d-16.51499157083114!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x915f210079f71ff3%3A0xf67bcd79768f409!2sEdificio%20Alianza!5e0!3m2!1ses!2sbo!4v1775154969376!5m2!1ses!2sbo" 
+                        width="100%" 
+                        height="400" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        title="Ubicación de CMG Dental Clinic">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QR Section -->
+    <section id="qr" class="qr-section">
+        <div class="container">
+            <div class="qr-content animate-on-scroll">
+                <div class="qr-text">
+                    <span class="section-subtitle">Comparte la invitación</span>
+                    <h2 class="section-title">Código QR</h2>
+                    <p class="qr-description">Escanea o comparte este código para acceder a la invitación digital</p>
+                </div>
+                <div class="qr-code-container">
+                    <div class="qr-frame">
+                        <canvas id="qrCode"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact / WhatsApp Section -->
+    <section id="contacto" class="contact-section">
+        <div class="container">
+            <div class="contact-content animate-on-scroll">
+                <div class="contact-text">
+                    <span class="section-subtitle">¿Nos acompañas?</span>
+                    <h2 class="section-title">Confirma tu Asistencia</h2>
+                    <p class="contact-description">Será un placer recibirte en nuestra gran inauguración. Confirma tu asistencia por WhatsApp y reserva tu lugar con la Dra. Carla Estrella.</p>
+                </div>
+                <a href="https://wa.me/59173223075?text=¡Hola!%20Quiero%20confirmar%20mi%20asistencia%20a%20la%20Gran%20Inauguración%20de%20CMG%20Dental%20Clinic%20🦷"
+                   class="whatsapp-btn"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                    <span class="wa-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                        </svg>
+                    </span>
+                    <span class="wa-text">Confirmar por WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="assets/images/logoCMclinicp.png" alt="CMG Dental Clinic" style="height: 50px; margin-right: 15px; filter: grayscale(1) brightness(2);">
+                    <span class="logo-text">CMG Dental Clinic</span>
+                </div>
+                <p class="footer-tagline">Donde tu sonrisa es nuestra obra de arte</p>
+
+                <p class="footer-copyright">© 2026 CMG Dental Clinic. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Audio para efectos de sonido (opcional) -->
+    <audio id="spinSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleVQ8teleVQ8=" type="audio/wav">
+    </audio>
+    <audio id="winSound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2teleVQ8" type="audio/wav">
+    </audio>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js?v=8"></script>
+</body>
+</html>
