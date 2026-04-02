@@ -345,10 +345,8 @@ function initSecretUnlock() {
 
 function spinWheel() {
     if (!wheelUnlocked) return;
-    
     if (isSpinning) return;
 
-    isSpinning = true;
     const wheel = document.querySelector('.ruleta-wheel');
     const spinBtn = document.getElementById('spinBtn');
     const nombreInput = document.getElementById('nombrePaciente');
@@ -364,6 +362,7 @@ function spinWheel() {
         return;
     }
 
+    isSpinning = true;
     spinBtn.disabled = true;
     spinBtn.querySelector('.spin-text').textContent = 'Girando...';
     spinBtn.classList.remove('ready-to-spin'); // Quitar latido
