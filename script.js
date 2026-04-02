@@ -671,12 +671,12 @@ function shareOnWhatsApp() {
     // Si escribió su número, usamos wa.me/591XXXXX directamente. Caso contrario abrimos WhatsApp genérico
     const telQuery = telefonoRaw ? `591${telefonoRaw}?` : "?";
     
-    const message = `🎉 ¡Hola ${nombre}! Este es tu premio especial ganado en la Gran Inauguración de CMG Dental Clinic.\n\n🎁 Premio: *${data.prize}*\n\n¡Por favor, envíanos a este chat la imagen del vale que acabamos de descargarte para canjearlo en tu próxima visita! 🦷`;
+    const message = `🎉 ¡Hola ${nombre}! Gracias por acompañarnos en la Gran Inauguración de *CMG Dental Clinic*.\n\nTe enviamos tu pase ganador oficial de nuestra ruleta:\n🎁 Premio: *${data.prize}*\n\nGuarda la imagen que te adjuntaremos y muéstrala en tu próxima cita con la Dra. Carla Estrella para canjear tu premio.\n\n¡Nos vemos pronto y a seguir sonriendo! ✨🦷`;
 
     // Capturar la imagen del Vale de premio
     const premioTicket = document.getElementById('premioTicket');
     if (typeof html2canvas !== 'undefined' && premioTicket) {
-        html2canvas(premioTicket, {backgroundColor: '#ffffff', scale: 2}).then(canvas => {
+        html2canvas(premioTicket, {backgroundColor: '#1A1A1A', scale: 3, useCORS: true}).then(canvas => {
             // 1. Descargar la imagen del vale a la computadora/celular
             const link = document.createElement('a');
             link.download = `Vale-Premio-CMG-${nombre.replace(/\s+/g, '-')}.png`;
