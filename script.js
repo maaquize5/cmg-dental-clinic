@@ -8,7 +8,7 @@
 // ============================================
 const CONFIG = {
     // Fecha del evento (formato: aÃ±o, mes-1, dÃ­a, hora, minutos)
-    eventDate: new Date(2026, 3, 3, 10, 0, 0), // 3 de Abril 2026, 10:00 AM
+    eventDate: new Date(2026, 3, 3, 11, 0, 0), // 3 de Abril 2026, 11:00 AM
 
     // NÃºmero de WhatsApp (con cÃ³digo de paÃ­s, sin + ni espacios)
     whatsappNumber: '59173223075',
