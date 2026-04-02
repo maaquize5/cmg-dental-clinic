@@ -534,14 +534,45 @@ function renderWinners() {
         if (exportBtn) exportBtn.style.display = 'block';
         listContainer.innerHTML = '';
 
-        w.slice().reverse().forEach(winner => {
+        w.slice().reverse().forEach((winner, reversedIndex) => {
+            const originalIndex = w.length - 1 - reversedIndex;
             const li = document.createElement('li');
             li.style.padding = '8px 12px';
             li.style.marginBottom = '5px';
             li.style.background = '#FFFFFF';
             li.style.borderRadius = '4px';
             li.style.borderLeft = '3px solid var(--color-gold)';
-            li.innerHTML = '<strong style="color:var(--color-dark);">' + (winner.name || 'Paciente') + '</strong><br><span style="color:var(--color-gold-dark);">' + winner.prize + '</span>';
+            li.style.display = 'flex';
+            li.style.justifyContent = 'space-between';
+            li.style.alignItems = 'center';
+            
+            const infoDiv = document.createElement('div');
+            infoDiv.innerHTML = '<strong style="color:var(--color-dark);">' + (winner.name || 'Paciente') + '</strong><br><span style="color:var(--color-gold-dark);">' + winner.prize + '</span>';
+            
+            const actionDiv = document.createElement('div');
+            actionDiv.style.display = 'flex';
+            actionDiv.style.gap = '15px';
+            actionDiv.style.alignItems = 'center';
+            
+            const editBtn = document.createElement('span');
+            editBtn.innerHTML = '✏️';
+            editBtn.style.cursor = 'pointer';
+            editBtn.title = 'Editar celular';
+            editBtn.style.fontSize = '1.1rem';
+            editBtn.onclick = () => window.editWinnerPhone(originalIndex);
+            
+            const delBtn = document.createElement('span');
+            delBtn.innerHTML = '🗑️';
+            delBtn.style.cursor = 'pointer';
+            delBtn.title = 'Eliminar';
+            delBtn.style.fontSize = '1.1rem';
+            delBtn.onclick = () => window.deleteWinner(originalIndex);
+            
+            actionDiv.appendChild(editBtn);
+            actionDiv.appendChild(delBtn);
+            li.appendChild(infoDiv);
+            li.appendChild(actionDiv);
+            
             listContainer.appendChild(li);
         });
     } catch (e) {
@@ -550,24 +581,56 @@ function renderWinners() {
     }
 }
 
+window.editWinnerPhone = function(index) {
+    let savedData = localStorage.getItem(CONFIG.storageKey);
+    if (!savedData) return;
+    let w = JSON.parse(savedData);
+    let phone = prompt('Editar celular (WhatsApp) de ' + w[index].name + ':', w[index].phone);
+    if (phone !== null) {
+        phone = phone.replace(/[^0-9]/g, '');
+        if(phone.length === 8) {
+            w[index].phone = phone;
+            localStorage.setItem(CONFIG.storageKey, JSON.stringify(w));
+            renderWinners();
+        } else {
+            alert('El celular debe tener exactamente 8 números.');
+        }
+    }
+};
+
+window.deleteWinner = function(index) {
+    if(confirm('¿Estás seguro de eliminar este ganador? Esto borrará su victoria y le permitirá girar de nuevo.')) {
+        let savedData = localStorage.getItem(CONFIG.storageKey);
+        if (!savedData) return;
+        let w = JSON.parse(savedData);
+        w.splice(index, 1);
+        localStorage.setItem(CONFIG.storageKey, JSON.stringify(w));
+        renderWinners();
+    }
+};
+
 function exportWinnersCSV() {
     const savedData = localStorage.getItem(CONFIG.storageKey);
     let data = savedData ? JSON.parse(savedData) : [];
     if (!Array.isArray(data)) data = [data];
     if (data.length === 0) return;
 
-    let csvContent = "\uFEFFNombre;Celular;Premio;FechaHora\n";
+    let html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"></head><body>';
+    html += '<table border="1"><tr><th style="background-color:#C9A96E;color:white;">Nombre</th><th style="background-color:#C9A96E;color:white;">Celular (WhatsApp)</th><th style="background-color:#C9A96E;color:white;">Premio</th><th style="background-color:#C9A96E;color:white;">Fecha y Hora</th></tr>';
+    
     data.forEach(function(row) {
         const dateObj = new Date(row.date);
         const fechaFormat = dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString();
-        csvContent += `${row.name};${row.phone};${row.prize};${fechaFormat}\n`;
+        html += `<tr><td>${row.name}</td><td>${row.phone}</td><td>${row.prize}</td><td>${fechaFormat}</td></tr>`;
     });
+    
+    html += '</table></body></html>';
 
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob(['\ufeff' + html], { type: 'application/vnd.ms-excel' });
     const url = URL.createObjectURL(blob);
     const downloadLink = document.createElement("a");
     downloadLink.href = url;
-    downloadLink.download = "Ganadores_CMG_Clinic.csv";
+    downloadLink.download = "Ganadores_CMG_Clinic.xls";
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
