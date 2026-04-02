@@ -186,13 +186,14 @@ function initRuleta() {
     // Dibujar la ruleta
     drawWheel(ctx, rect.width, rect.height);
 
-    // Ocultar overlay
     if(wheelUnlocked) {
-        overlay.style.display = 'none';
-        spinBtn.disabled = false;
-        spinBtn.style.opacity = '1';
-        spinBtn.style.cursor = 'pointer';
-        spinBtn.classList.remove('disabled');
+        if(overlay) overlay.style.display = 'none';
+        if(spinBtn) {
+            spinBtn.disabled = false;
+            spinBtn.style.opacity = '1';
+            spinBtn.style.cursor = 'pointer';
+            spinBtn.classList.remove('disabled');
+        }
     }
 
     // Evento de girar
@@ -255,12 +256,35 @@ function drawWheel(ctx, width, height) {
     ctx.stroke();
 }
 
+function checkPlayReady() {
+    const nombreInput = document.getElementById('nombrePaciente');
+    const telefonoInput = document.getElementById('telefonoPaciente');
+    const spinBtn = document.getElementById('spinBtn');
+    
+    if (!wheelUnlocked || !spinBtn || spinBtn.disabled) {
+        spinBtn.classList.remove('ready-to-spin');
+        return;
+    }
+
+    if (nombreInput && nombreInput.value.trim() !== '' && telefonoInput && telefonoInput.value.trim() !== '') {
+        spinBtn.classList.add('ready-to-spin');
+    } else {
+        spinBtn.classList.remove('ready-to-spin');
+    }
+}
+
 function initSecretUnlock() {
     const unlockBtn = document.getElementById('secretUnlock');
     const overlay = document.getElementById('ruletaOverlay');
     const spinBtn = document.getElementById('spinBtn');
+    const nombreInput = document.getElementById('nombrePaciente');
+    const telefonoInput = document.getElementById('telefonoPaciente');
     let clickCount = 0;
     let clickTimer;
+
+    // Escuchar inputs para dar retroalimentación visual al botón
+    if(nombreInput) nombreInput.addEventListener('input', checkPlayReady);
+    if(telefonoInput) telefonoInput.addEventListener('input', checkPlayReady);
 
     if(unlockBtn) {
         unlockBtn.addEventListener('click', () => {
@@ -278,6 +302,7 @@ function initSecretUnlock() {
                     spinBtn.style.cursor = 'pointer';
                     spinBtn.classList.remove('disabled');
                     alert('Ruleta desbloqueada exitosamente.');
+                    checkPlayReady(); // Verificar si ya hay datos
                 }
                 clickCount = 0;
             }
@@ -308,9 +333,10 @@ function spinWheel() {
 
     spinBtn.disabled = true;
     spinBtn.querySelector('.spin-text').textContent = 'Girando...';
+    spinBtn.classList.remove('ready-to-spin'); // Quitar latido
 
-    // Reproducir sonido (si estÃ¡ disponible)
-    // playSound('spin');
+    // Reproducir sonido de casino (tics que desaceleran)
+    playSound('spin');
 
     // Calcular rotaciÃ³n aleatoria
     const prizes = CONFIG.prizes;
@@ -386,8 +412,35 @@ function showResult(prize) {
 
     if (spinBtn) spinBtn.style.display = 'none';
 
-    // Reproducir sonido de victoria
-    // playSound('win');
+    // Reproducir sonido de victoria espectacular
+    playSound('win');
+    
+    // Confeti explota en pantalla:
+    if(typeof confetti === 'function') {
+        var duration = 3000;
+        var end = Date.now() + duration;
+
+        (function frame() {
+            confetti({
+                particleCount: 5,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#C9A96E', '#B76E79', '#FFFFFF']
+            });
+            confetti({
+                particleCount: 5,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#C9A96E', '#B76E79', '#FFFFFF']
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
+    }
 
     // Actualizar historial
     renderWinners();
@@ -504,35 +557,69 @@ function shareOnWhatsApp() {
         const encodedMessage = encodeURIComponent(message);
         window.open(`https://wa.me/${telQuery}text=${encodedMessage}`, '_blank');
     }
+}
+
+function playSound(type) {
     try {
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
-        const gainNode = audioContext.createGain();
-
-        oscillator.connect(gainNode);
-        gainNode.connect(audioContext.destination);
-
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+        
+        const audioContext = new AudioContext();
+        
         if (type === 'spin') {
-            // Sonido de giro suave
-            oscillator.frequency.setValueAtTime(200, audioContext.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(100, audioContext.currentTime + 0.3);
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.3);
+            // Sonido de giro tipo rueda de fortuna (clics rítmicos)
+            const tickCount = 20; 
+            const duration = 4.0; // tiempo de la animación
+            for(let i=0; i<tickCount; i++) {
+                // Hacer que los clics se vayan espaciando (desacelerando)
+                const normalized = i / (tickCount - 1);
+                // curva cuadrática para que se ralentice
+                const time = audioContext.currentTime + (duration * (normalized * normalized));
+                
+                const tickOsc = audioContext.createOscillator();
+                const tickGain = audioContext.createGain();
+                
+                tickOsc.connect(tickGain);
+                tickGain.connect(audioContext.destination);
+                
+                tickOsc.type = 'triangle';
+                tickOsc.frequency.setValueAtTime(600, time);
+                tickOsc.frequency.exponentialRampToValueAtTime(100, time + 0.05);
+                
+                tickGain.gain.setValueAtTime(0.5, time);
+                tickGain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+                
+                tickOsc.start(time);
+                tickOsc.stop(time + 0.05);
+            }
         } else if (type === 'win') {
-            // Sonido de victoria
-            oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
-            oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
-            oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + 0.5);
+            // Arpegio de victoria estilo casino
+            const time = audioContext.currentTime;
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'sine';
+            
+            // Re-Mi-Sol-Do agudo (arpegio mayor)
+            oscillator.frequency.setValueAtTime(392.00, time); // G4
+            oscillator.frequency.setValueAtTime(523.25, time + 0.15); // C5
+            oscillator.frequency.setValueAtTime(659.25, time + 0.3); // E5
+            oscillator.frequency.setValueAtTime(1046.50, time + 0.45); // C6
+            
+            gainNode.gain.setValueAtTime(0, time);
+            gainNode.gain.linearRampToValueAtTime(0.5, time + 0.05);
+            gainNode.gain.setValueAtTime(0.5, time + 0.45);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, time + 1.2);
+            
+            oscillator.start(time);
+            oscillator.stop(time + 1.5);
         }
     } catch (e) {
         // Silenciar errores de audio
-        console.log('Audio no disponible');
+        console.log('Audio de victoria silenciado o falló:', e);
     }
 }
 
