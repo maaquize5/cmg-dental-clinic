@@ -359,6 +359,13 @@ ul {
     transform: scale(1.1);
 }
 
+@media (max-width: 768px) {
+    .hero-background {
+        background-attachment: scroll;
+        filter: blur(8px); /* Menos blur en móvil para mejorar rendimiento */
+    }
+}
+
 .marble-texture {
     position: absolute;
     top: 0;
