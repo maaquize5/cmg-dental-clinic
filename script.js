@@ -669,9 +669,9 @@ function shareOnWhatsApp() {
     const nombre = data.name || "El paciente";
     const telefonoRaw = data.phone || "";
     // Si escribió su número, usamos wa.me/591XXXXX directamente. Caso contrario abrimos WhatsApp genérico
-    const telQuery = telefonoRaw ? `591${telefonoRaw}?` : "?";
+    const telQuery = telefonoRaw ? `phone=591${telefonoRaw}&` : "";
     
-    const message = `🎉 ¡Hola ${nombre}! Gracias por acompañarnos en la Gran Inauguración de *CMG Dental Clinic*.\n\nTe enviamos tu pase ganador oficial de nuestra ruleta:\n🎁 Premio: *${data.prize}*\n\nGuarda la imagen que te adjuntaremos y muéstrala en tu próxima cita con la Dra. Carla Estrella para canjear tu premio.\n\n¡Nos vemos pronto y a seguir sonriendo! ✨🦷`;
+    const message = `¡Hola ${nombre}! Gracias por acompañarnos en la Gran Inauguración de *CMG Dental Clinic*.\n\nTe enviamos tu pase ganador oficial de nuestra ruleta:\nPremio: *${data.prize}*\n\nGuarda la imagen que te adjuntaremos y muéstrala en tu próxima cita con la Dra. Carla Estrella para canjear tu premio.\n\n¡Nos vemos pronto y a seguir sonriendo!`;
 
     // Capturar la imagen del Vale de premio
     const premioTicket = document.getElementById('premioTicket');
@@ -686,17 +686,17 @@ function shareOnWhatsApp() {
             // 2. Redirigir a WhatsApp medio segundo después
             setTimeout(() => {
                 const encodedMessage = encodeURIComponent(message);
-                window.open(`https://wa.me/${telQuery}text=${encodedMessage}`, '_blank');
+                window.open(`https://api.whatsapp.com/send?${telQuery}text=${encodedMessage}`, '_blank');
             }, 800);
         }).catch(err => {
             console.error("Error al generar imagen", err);
             const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/${telQuery}text=${encodedMessage}`, '_blank');
+            window.open(`https://api.whatsapp.com/send?${telQuery}text=${encodedMessage}`, '_blank');
         });
     } else {
         // Fallback si la librería no cargó
         const encodedMessage = encodeURIComponent(message);
-        window.open(`https://wa.me/${telQuery}text=${encodedMessage}`, '_blank');
+        window.open(`https://api.whatsapp.com/send?${telQuery}text=${encodedMessage}`, '_blank');
     }
 }
 
