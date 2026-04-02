@@ -205,6 +205,12 @@ function initRuleta() {
 
     // Evento de compartir
     shareBtn.addEventListener('click', shareOnWhatsApp);
+
+    // Evento Exportar excel
+    const exportCsvBtn = document.getElementById('exportCsvBtn');
+    if (exportCsvBtn) {
+        exportCsvBtn.addEventListener('click', exportWinnersCSV);
+    }
 }
 
 function drawWheel(ctx, width, height) {
@@ -266,11 +272,25 @@ function checkPlayReady() {
         return;
     }
 
-    if (nombreInput && nombreInput.value.trim() !== '' && telefonoInput && telefonoInput.value.trim() !== '') {
+    const isValidName = nombreInput && nombreInput.value.trim().length >= 3;
+    const isValidPhone = telefonoInput && telefonoInput.value.trim().length >= 8;
+
+    if (isValidName && isValidPhone) {
         spinBtn.classList.add('ready-to-spin');
     } else {
         spinBtn.classList.remove('ready-to-spin');
     }
+}
+
+function formatName(input) {
+    // Capitalizar la primera letra de cada palabra
+    let words = input.value.split(' ');
+    for (let i = 0; i < words.length; i++) {
+        if(words[i].length > 0) {
+            words[i] = words[i][0].toUpperCase() + words[i].substr(1).toLowerCase();
+        }
+    }
+    input.value = words.join(' ');
 }
 
 function initSecretUnlock() {
@@ -282,9 +302,22 @@ function initSecretUnlock() {
     let clickCount = 0;
     let clickTimer;
 
-    // Escuchar inputs para dar retroalimentación visual al botón
-    if(nombreInput) nombreInput.addEventListener('input', checkPlayReady);
-    if(telefonoInput) telefonoInput.addEventListener('input', checkPlayReady);
+    // Escuchar inputs para dar retroalimentación visual al botón y limpiar errores
+    if(nombreInput) {
+        nombreInput.addEventListener('input', () => {
+            checkPlayReady();
+        });
+        nombreInput.addEventListener('blur', function() {
+            formatName(this);
+        });
+    }
+    if(telefonoInput) {
+        telefonoInput.addEventListener('input', function(e) {
+            // Forzar solo números y máximo 8 dígitos
+            this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);
+            checkPlayReady();
+        });
+    }
 
     if(unlockBtn) {
         unlockBtn.addEventListener('click', () => {
@@ -321,13 +354,13 @@ function spinWheel() {
     const nombreInput = document.getElementById('nombrePaciente');
     const telefonoInput = document.getElementById('telefonoPaciente');
 
-    if (nombreInput && !nombreInput.value.trim()) {
-        alert('Por favor ingrese el nombre del paciente antes de girar la ruleta.');
+    if (nombreInput && nombreInput.value.trim().length < 3) {
+        alert('Por favor ingrese el nombre completo del paciente.');
         return;
     }
     
-    if (telefonoInput && !telefonoInput.value.trim()) {
-        alert('Por favor ingrese el celular del paciente.');
+    if (telefonoInput && telefonoInput.value.trim().length !== 8) {
+        alert('El celular debe tener exactamente 8 números (Ej. 71234567).');
         return;
     }
 
@@ -482,6 +515,7 @@ function checkPreviousPlay() {
 function renderWinners() {
     const listContainer = document.getElementById('winnersList');
     const noMsg = document.getElementById('noWinnersMsg');
+    const exportBtn = document.getElementById('exportCsvBtn');
     if (!listContainer) return;
 
     try {
@@ -491,11 +525,13 @@ function renderWinners() {
 
         if (w.length === 0) {
             if (noMsg) noMsg.style.display = 'block';
+            if (exportBtn) exportBtn.style.display = 'none';
             listContainer.innerHTML = '';
             return;
         }
 
         if (noMsg) noMsg.style.display = 'none';
+        if (exportBtn) exportBtn.style.display = 'block';
         listContainer.innerHTML = '';
 
         w.slice().reverse().forEach(winner => {
@@ -512,6 +548,29 @@ function renderWinners() {
         console.error(e);
         localStorage.removeItem(CONFIG.storageKey);
     }
+}
+
+function exportWinnersCSV() {
+    const savedData = localStorage.getItem(CONFIG.storageKey);
+    let data = savedData ? JSON.parse(savedData) : [];
+    if (!Array.isArray(data)) data = [data];
+    if (data.length === 0) return;
+
+    let csvContent = "\uFEFFNombre;Celular;Premio;FechaHora\n";
+    data.forEach(function(row) {
+        const dateObj = new Date(row.date);
+        const fechaFormat = dateObj.toLocaleDateString() + " " + dateObj.toLocaleTimeString();
+        csvContent += `${row.name};${row.phone};${row.prize};${fechaFormat}\n`;
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = "Ganadores_CMG_Clinic.csv";
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
 }
 
 function shareOnWhatsApp() {
