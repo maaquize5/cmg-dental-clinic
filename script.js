@@ -372,7 +372,31 @@ function spinWheel() {
 
     // Calcular rotaciÃ³n aleatoria y exacta
     const prizes = CONFIG.prizes;
-    const randomPrize = Math.floor(Math.random() * prizes.length);
+    
+    // Probabilidades (deben sumar 100)
+    const probabilidades = [
+        15, // Indice 0: Limpieza gratis
+        15, // Indice 1: Limpieza 50% desc.
+        2,  // Indice 2: Blanqueamiento 50% desc.
+        35, // Indice 3: Premio consuelo
+        3,  // Indice 4: Kit de limpieza
+        28, // Indice 5: Fluorizacion gratis
+        2   // Indice 6: Rehabilitacion 10% desc.
+    ];
+
+    let totalProbabilidad = probabilidades.reduce((suma, peso) => suma + peso, 0);
+    let valorAleatorio = Math.random() * totalProbabilidad;
+    let sumaAcumulada = 0;
+    let randomPrize = 0;
+
+    for (let i = 0; i < probabilidades.length; i++) {
+        sumaAcumulada += probabilidades[i];
+        if (valorAleatorio <= sumaAcumulada) {
+            randomPrize = i;
+            break;
+        }
+    }
+    
     const arc = 360 / prizes.length;
 
     // PosiciÃ³n del centro del premio
