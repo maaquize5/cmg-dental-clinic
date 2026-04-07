@@ -596,8 +596,9 @@ function checkPreviousPlay() {
             const canvas = document.getElementById('wheelCanvas');
             if (canvas) {
                 const ctx = canvas.getContext('2d');
-                const rect = canvas.getBoundingClientRect();
-                drawWheel(ctx, rect.width, rect.height);
+                const w = canvas.width / (window.devicePixelRatio || 1);
+                const h = canvas.height / (window.devicePixelRatio || 1);
+                drawWheel(ctx, w, h);
             }
         });
     }
@@ -702,8 +703,9 @@ window.deleteWinner = function(index) {
         const canvas = document.getElementById('wheelCanvas');
         if (canvas) {
             const ctx = canvas.getContext('2d');
-            const rect = canvas.getBoundingClientRect();
-            drawWheel(ctx, rect.width, rect.height);
+            const w = canvas.width / (window.devicePixelRatio || 1);
+            const h = canvas.height / (window.devicePixelRatio || 1);
+            drawWheel(ctx, w, h);
         }
     }
 };
