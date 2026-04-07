@@ -21,11 +21,11 @@ const CONFIG = {
 
     // Premios de la ruleta
     prizes: [
-        { text: 'Fluorización gratis', color: '#F8F8F8', textColor: '#2C2C2C', limit: 100 },
-        { text: 'Limpieza 50% desc.', color: '#B76E79', textColor: '#FFFFFF', limit: 3 },
-        { text: 'Limpieza 1 gratis', color: '#C9A96E', textColor: '#FFFFFF', limit: 1 },
-        { text: 'Ortopedia 5% desc. contado', color: '#F8F8F8', textColor: '#2C2C2C', limit: 2 },
-        { text: 'Ortodoncia 5% desc. contado', color: '#C9A96E', textColor: '#FFFFFF', limit: 2 }
+        { id: 'p1', text: 'Fluorización gratis', color: '#F8F8F8', textColor: '#2C2C2C', limit: 100 },
+        { id: 'p2', text: 'Limpieza 50% desc.', color: '#B76E79', textColor: '#FFFFFF', limit: 3 },
+        { id: 'p3', text: 'Limpieza 1 gratis', color: '#C9A96E', textColor: '#FFFFFF', limit: 1 },
+        { id: 'p4', text: 'Ortopedia 5% desc. contado', color: '#F8F8F8', textColor: '#2C2C2C', limit: 2 },
+        { id: 'p5', text: 'Ortodoncia 5% desc. contado', color: '#C9A96E', textColor: '#FFFFFF', limit: 2 }
     ],
 
     // localStorage key
@@ -219,30 +219,33 @@ function getAvailablePrizes() {
     } catch(e) {
         winnersList = [];
     }
-    if (!Array.isArray(winnersList)) {
-        winnersList = winnersList ? [winnersList] : [];
-    }
+    if (!Array.isArray(winnersList)) { winnersList = winnersList ? [winnersList] : []; }
     let counts = {};
-    for (let w of winnersList) {
-        counts[w.prize] = (counts[w.prize] || 0) + 1;
-    }
-    let available = CONFIG.prizes.filter(p => {
-        let won = counts[p.text] || 0;
-        return won < p.limit;
-    });
-    if (available.length === 0) {
-        return [{ text: '¡Gracias por participar!', color: '#C9A96E', textColor: '#FFFFFF', limit: 999 }];
-    }
+    for (let w of winnersList) { counts[w.prize] = (counts[w.prize] || 0) + 1; }
+    
+    let available = CONFIG.prizes.filter(p => (counts[p.text] || 0) < p.limit);
+    if (available.length === 0) return [{ text: '¡Gracias por venir!', color: '#C9A96E', textColor: '#FFFFFF', limit: 999 }];
     return available;
+}
+
+function getWheelSlices() {
+    const available = getAvailablePrizes();
+    let minSlices = 8;
+    let slices = [];
+    while (slices.length < minSlices) {
+        slices.push(...available);
+    }
+    return slices;
 }
 
 function drawWheel(ctx, width, height) {
     ctx.clearRect(0, 0, width, height);
-
+    
     const centerX = width / 2;
     const centerY = height / 2;
     const radius = Math.min(width, height) / 2 - 5;
-    const prizes = getAvailablePrizes();
+    
+    const prizes = getWheelSlices();
     const arc = (2 * Math.PI) / prizes.length;
 
     prizes.forEach((prize, i) => {
@@ -396,8 +399,9 @@ function spinWheel() {
     playSound('spin');
 
     // Calcular rotaciÃ³n aleatoria y exacta
-    const prizes = getAvailablePrizes();
+    const prizes = getWheelSlices();
     
+    // Random selection among current wheel slices uniformly
     let randomPrize = Math.floor(Math.random() * prizes.length);
     
     const arc = 360 / prizes.length;
@@ -660,6 +664,14 @@ window.deleteWinner = function(index) {
         w.splice(index, 1);
         localStorage.setItem(CONFIG.storageKey, JSON.stringify(w));
         renderWinners();
+        
+        // Volver a dibujar la ruleta
+        const canvas = document.getElementById('wheelCanvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            drawWheel(ctx, rect.width, rect.height);
+        }
     }
 };
 
