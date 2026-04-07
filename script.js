@@ -244,18 +244,25 @@ function getWheelSlices() {
     
     // Vamos a crear 10 porciones intercalando
     for(let i = 0; i < 10; i++) {
-        // En posiciones pares, ponemos un premio gordo si aún hay disponibles
         if (i % 2 === 0 && rareIndex < raros.length) {
-            slices.push(raros[rareIndex]);
+            slices.push({...raros[rareIndex]});
             rareIndex++;
         } else {
-            // Posiciones impares o si ya se acabaron los gordos, ponemos Fluorización
             if (comun) {
-                slices.push(comun);
+                slices.push({...comun});
             } else {
-                // En el caso muy raro de que se acabe la Fluorización pero queden gordos
-                slices.push(raros[i % raros.length]);
+                slices.push({...raros[i % raros.length]});
             }
+        }
+    }
+    
+    // Asegurar que colores consecutivos no se fusionen visualmente (causa el efecto "desproporcionado")
+    for (let i = 0; i < slices.length; i++) {
+        let prev = (i === 0) ? slices.length - 1 : i - 1;
+        if (slices[i].color === slices[prev].color) {
+            if (slices[i].color === '#F8F8F8') slices[i].color = '#EAEAEA';
+            else if (slices[i].color === '#C9A96E') slices[i].color = '#B89A61';
+            else if (slices[i].color === '#B76E79') slices[i].color = '#A6636D';
         }
     }
     
