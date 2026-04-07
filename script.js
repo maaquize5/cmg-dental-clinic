@@ -211,7 +211,7 @@ function initRuleta() {
     }
 }
 
-function getAvailablePrizes() {
+function getWheelSlices() {
     let savedData = localStorage.getItem(CONFIG.storageKey);
     let winnersList = [];
     try {
@@ -223,18 +223,42 @@ function getAvailablePrizes() {
     let counts = {};
     for (let w of winnersList) { counts[w.prize] = (counts[w.prize] || 0) + 1; }
     
+    // Obtener solo premios que aún tienen stock
     let available = CONFIG.prizes.filter(p => (counts[p.text] || 0) < p.limit);
-    if (available.length === 0) return [{ text: '¡Gracias por venir!', color: '#C9A96E', textColor: '#FFFFFF', limit: 999 }];
-    return available;
-}
-
-function getWheelSlices() {
-    const available = getAvailablePrizes();
-    let minSlices = 8;
-    let slices = [];
-    while (slices.length < minSlices) {
-        slices.push(...available);
+    
+    // Si se agotaron todos, devolvemos casillas de relleno
+    if (available.length === 0) {
+        let arr = [];
+        for(let i=0; i<10; i++) arr.push({ text: '¡Gracias por venir!', color: '#C9A96E', textColor: '#FFFFFF', limit: 999 });
+        return arr;
     }
+
+    // Para evitar que la ruleta se "deforme", la construiremos SIEMPRE con exactamente 10 porciones.
+    // Esto también logra que la probabilidad NO esté amañada: si un premio ocupa 1 casilla de 10, tiene 10% de probabilidad real.
+    
+    const comun = available.find(p => p.id === 'p1'); // Fluorización (el premio de relleno)
+    const raros = available.filter(p => p.id !== 'p1'); // Premios gordos
+
+    let slices = [];
+    let rareIndex = 0;
+    
+    // Vamos a crear 10 porciones intercalando
+    for(let i = 0; i < 10; i++) {
+        // En posiciones pares, ponemos un premio gordo si aún hay disponibles
+        if (i % 2 === 0 && rareIndex < raros.length) {
+            slices.push(raros[rareIndex]);
+            rareIndex++;
+        } else {
+            // Posiciones impares o si ya se acabaron los gordos, ponemos Fluorización
+            if (comun) {
+                slices.push(comun);
+            } else {
+                // En el caso muy raro de que se acabe la Fluorización pero queden gordos
+                slices.push(raros[i % raros.length]);
+            }
+        }
+    }
+    
     return slices;
 }
 
