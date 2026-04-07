@@ -229,38 +229,40 @@ function getWheelSlices() {
     // Si se agotaron todos, devolvemos casillas de relleno
     if (available.length === 0) {
         let arr = [];
-        for(let i=0; i<10; i++) arr.push({ text: '¡Gracias por venir!', color: '#C9A96E', textColor: '#FFFFFF', limit: 999 });
+        for(let i=0; i<10; i++) arr.push({ text: '¡Gracias por participar!', color: '#C9A96E', textColor: '#FFFFFF', limit: 999 });
         return arr;
     }
 
-    // Para evitar que la ruleta se "deforme", la construiremos SIEMPRE con exactamente 10 porciones.
-    // Esto también logra que la probabilidad NO esté amañada: si un premio ocupa 1 casilla de 10, tiene 10% de probabilidad real.
-    
+    // Para evitar que la ruleta se deforme, SIEMPRE tendrá 10 porciones idénticas (10% de probabilidad c/u).
+    // Esto es transparente, natural y justo.
     const comun = available.find(p => p.id === 'p1'); // Fluorización (el premio de relleno)
     const raros = available.filter(p => p.id !== 'p1'); // Premios gordos
 
     let slices = [];
     let rareIndex = 0;
     
-    // Vamos a crear 10 porciones intercalando
+    // Distribuimos equitativamente los premios (1 raro, luego varios comunes, etc.)
     for(let i = 0; i < 10; i++) {
-        if (i % 2 === 0 && rareIndex < raros.length) {
+        // Intercalamos los premios "raros" esparcidos en la ruleta
+        if (i % 2 !== 0 && rareIndex < raros.length) {
             slices.push({...raros[rareIndex]});
             rareIndex++;
         } else {
+            // Llenamos el resto de las porciones con Fluorización (tendrá 60%-70% del espacio)
             if (comun) {
                 slices.push({...comun});
             } else {
+                // Muy raro: si la Fluorización se agotó
                 slices.push({...raros[i % raros.length]});
             }
         }
     }
     
-    // Asegurar que colores consecutivos no se fusionen visualmente (causa el efecto "desproporcionado")
+    // Asegurar que colores consecutivos no se fusionen visualmente
     for (let i = 0; i < slices.length; i++) {
         let prev = (i === 0) ? slices.length - 1 : i - 1;
         if (slices[i].color === slices[prev].color) {
-            if (slices[i].color === '#F8F8F8') slices[i].color = '#EAEAEA';
+            if (slices[i].color === '#F8F8F8') slices[i].color = '#E8E8E8'; // Leve sombreado elegante
             else if (slices[i].color === '#C9A96E') slices[i].color = '#B89A61';
             else if (slices[i].color === '#B76E79') slices[i].color = '#A6636D';
         }
